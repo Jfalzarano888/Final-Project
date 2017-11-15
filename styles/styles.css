@@ -51,16 +51,20 @@ body {
   box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3); }
 
 #how-to-play {
+  margin: 0 auto;
   background-color: rgba(7, 77, 127, 0.8);
-  width: 100%;
-  margin-top: 2rem; }
+  max-width: 80rem;
+  margin-top: 2rem;
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3); }
 
 .rule-card {
   width: 31.25%;
   height: 10rem;
   margin: 1%;
   background-color: #E6E8E6;
-  float: left; }
+  float: left;
+  border: 2px solid #EDBD00;
+  box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.3); }
   .rule-card h2 {
     text-align: center;
     padding-top: .5rem;
@@ -70,5 +74,8 @@ body {
     font-size: 1.25rem;
     color: rgba(0, 0, 0, 0.7);
     line-height: 24px; }
+
+.hidden {
+  display: none; }
 
 /*# sourceMappingURL=styles.css.map */

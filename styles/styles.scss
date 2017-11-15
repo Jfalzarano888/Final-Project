@@ -94,9 +94,11 @@ background-color: $grey;
 }
 
 #how-to-play {
+  margin: 0 auto;
   background-color: $blue;
-  width: 100%;
+  max-width: 80rem;
   margin-top: 2rem;
+  box-shadow: $box-shadow;
 }
 
 .rule-card {
@@ -105,6 +107,8 @@ background-color: $grey;
   margin: 1%;
   background-color: $grey;
   float: left;
+  border: 2px solid $yellow;
+  box-shadow: $box-shadow;
 
     h2 {
       text-align: center;
@@ -118,4 +122,8 @@ background-color: $grey;
     color: $black;
     line-height: $line-height;
   }
+}
+
+.hidden {
+  display: none;
 }

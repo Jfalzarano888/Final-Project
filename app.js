@@ -9,15 +9,24 @@ var settings = {
     "postman-token": "d71acb46-b1a7-96be-edf8-617cdf974d0b"
   }
 }
-//
-// $.ajax(settings).done(function (response) {
-//   console.log(response);
-// });
-
-
 
 let imgRoot="https://api.gettyimages.com/v3/search/images?fields=id,title,thumb,referral_destinations&sort_order=best&phrase=puppies";
 let matchCards = [];
+
+$(window).load(function() {
+    console.log('hello');
+    displayGameCards(imgRoot);
+    const $rowGrab1 = $("#match-row1");
+    const $rowGrab2 = $("#match-row2");
+    const $childGrab1 = $rowGrab1.children(".card-front");
+    const $childGrab2 = $rowGrab2.children(".card-front");
+    $rowGrab1.on('click', 'img', function() {
+      $('.card-front').toggle(".card-back");
+    });
+
+    // const $modal = $("#popUp");
+    // const $modalClose = $modal.children(".closePopUp");
+});
 
 function getRandomInt(array) {
   	let max = array.length;
@@ -40,33 +49,23 @@ function displayGameCards(url) {
   $.ajax(settings).done(function(results){
     for(let i=0; i<3; i++){
       let randoShit = getRandomInt(results.images);
-      console.log('not random stuff');
-      console.log(randoShit.display_sizes[0].uri);
       matchCards.push(randoShit.display_sizes[0].uri);
     }
+    matchCards.forEach(function(matchCard, i){
 
-    console.log(matchCards);
-    // results.images.forEach(function(picture, i){
-    //     if(i < 3) {
-    //       matchCards.push(picture.display_sizes[0].uri);
-    //     }
-    // });
-    matchCards.forEach(function(matchCard){
       $("#match-row1").append(`
           <div class="card-frame">
-            <img src="${matchCard}" alt="card-back">
+            <img  class="hidden card-front" src="${matchCard}" alt="card-front">
+            <img  class="card-back" src="pictures/face.svg" alt="card-back">
           </div>`);
     })
     shuffle(matchCards);
-    matchCards.forEach(function(matchCard){
+    matchCards.forEach(function(matchCard, i){
       $("#match-row2").append(`
           <div class="card-frame">
-             <img src="${matchCard}" alt="card-back">
+             <img class="hidden card-front" src="${matchCard}" alt="card-front">
+             <img class="card-back" src="pictures/face.svg" alt="card-back">
           </div>`);
     })
   })
 };
-
-
-
-displayGameCards(imgRoot);
