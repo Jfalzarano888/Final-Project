@@ -14,10 +14,7 @@ let imgRoot="https://api.gettyimages.com/v3/search/images?fields=id,title,thumb,
 let matchCards = [];
 let displayRow1 = [];
 let displayRow2 = [];
-let displayRow3 = ["butthole", "fuck", "ass"];
-const $modal = $("#match-row1");
-
-const $test = $modal.find( 'div[name="card0"]' );
+let $match = "";
 //
 // const test2 = displayRow2.find("div[name='card0']" )
 //
@@ -29,9 +26,35 @@ $(window).load(function() {
 });
 
 $(document).on("click", ".card-frame", function(){
+  $(this).addClass("selected");
+  $(this).find(".card-front").removeClass("hidden");
+  const $cardFrame = $(this);
+  const $cardName = $cardFrame.attr("name");
+  if (!$match) {
+    console.log("you idiot dr. dres dead hes lost in my basement");
+    $match = $cardName
+    console.log($match);
+  } else {
+    if ($cardName === $match ) {
+      console.log("All famous women love eminem chicka chikca slim shady");
+      cardRemoval();
+  } else {
+      cardFlip();
+  }
+  $match = "";
+}
 
-  console.log($name);
-  var $name = $(this).find('div[name="card0"]');
+
+// $(this).find(".card-back").addClass("hidden");
+// $(this).addClass("selected");
+
+  //console.log($cardName);
+
+  // if ($cardName === $cardName) {
+  //   console.log("congrats, you got a match!");
+  // }
+  // console.log($test);
+  //var $name = $(this).find('name');
 
   //console.log(displayRow2[0]);
   // if (displayRow1[0] == displayRow2[0] && $(".selected")) {
@@ -49,11 +72,24 @@ $(document).on("click", ".card-frame", function(){
   //   return;
   // }
 
-  $(this).find(".card-front").removeClass("hidden");
-  $(this).find(".card-back").addClass("hidden");
-  $(this).addClass("selected");
+  // $(this).find(".card-front").removeClass("hidden");
+  // $(this).find(".card-back").addClass("hidden");
+
   //console.log(displayRow2[1]);
 })
+
+function cardRemoval () {
+  let card = $(".selected");
+  card.remove();
+}
+
+function cardFlip (){
+  let cardFront = $(".card-frame").find(".card-front");
+  let card = $(".selected");
+  cardFront.addClass("hidden");
+  card.removeClass("selected");
+
+}
 
 function getRandomInt(array) {
   	let max = array.length;
@@ -70,9 +106,7 @@ function shuffle(a) {
         a[i] = a[j];
         a[j] = x;
     }
-    console.log(a);
 }
-
 function displayGameCards(url) {
   $.ajax(settings).done(function(results){
     for(let i=0; i<3; i++){
@@ -82,29 +116,19 @@ function displayGameCards(url) {
     matchCards.forEach(function(matchCard, i){
       displayRow1.push(`
           <div name="card${i}" class="card-frame">
-            <img class="hidden card-front" src="${matchCard}" alt="card-front">
+            <img name="card${i}" class="hidden card-front" src="${matchCard}" alt="card-front">
             <img class="card-back" src="pictures/face.svg" alt="card-back">
           </div>`);
-    });
-
+    }); shuffle(displayRow1);
     matchCards.forEach(function(matchCard, i){
-    displayRow2.push(
+      displayRow2.push(
           `<div name="card${i}" class="card-frame">
-              <img class="hidden card-front" src="${matchCard}" alt="card-front">
+              <img name="card${i}"  class="hidden card-front" src="${matchCard}" alt="card-front">
               <img class="card-back" src="pictures/face.svg" alt="card-back">
           </div>`);
     });
-    //console.log(displayRow2[0]);
     shuffle(displayRow2);
-    //console.log(displayRow2[0]);
     $("#match-row1").append(displayRow1);
     $("#match-row2").append(displayRow2);
-    const $modal = $("#match-row1");
-    const $test = $modal.find( "div[name='card0']" );
-    //console.log($test);
   });
 }
-
-// console.log(displayRow3.length);
-//console.log(displayRow2[0]);
-// shuffle(displayRow1);
