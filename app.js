@@ -10,85 +10,52 @@ var settings = {
   }
 }
 
-let imgRoot="https://api.gettyimages.com/v3/search/images?fields=id,title,thumb,referral_destinations&sort_order=best&phrase=puppies";
+// let imgRoot="https://api.gettyimages.com/v3/search/images?fields=id,title,thumb,referral_destinations&sort_order=best&phrase=puppies";
 let matchCards = [];
 let displayRow1 = [];
-let displayRow2 = [];
 let $match = "";
-//
-// const test2 = displayRow2.find("div[name='card0']" )
-//
-// console.log($test2);
 
 $(window).load(function() {
     console.log('hello');
-    displayGameCards(imgRoot);
+    displayGameCards();
 });
 
 $(document).on("click", ".card-frame", function(){
-  $(this).addClass("selected");
-  $(this).find(".card-front").removeClass("hidden");
   const $cardFrame = $(this);
   const $cardName = $cardFrame.attr("name");
+  const $index = $cardFrame.attr("index");
+  $(this).addClass("selected");
+  const $cardBack = $(".selected").find(".card-back");
+  $cardBack.addClass("hidden");
+  $(this).find(".card-front").removeClass("hidden");
   if (!$match) {
-    console.log("you idiot dr. dres dead hes lost in my basement");
-    $match = $cardName
+    $match = $cardName;
+    $matchIndex = $index;
     console.log($match);
   } else {
-    if ($cardName === $match ) {
-      console.log("All famous women love eminem chicka chikca slim shady");
+    if ($cardName === $match && $index !== $matchIndex) {
+      // setTimeout(cardRemoval, 750);
       cardRemoval();
-  } else {
-      cardFlip();
+    } else {
+        setTimeout(cardFlip, 750);
+    }
+    $match = "";
   }
-  $match = "";
-}
-
-
-// $(this).find(".card-back").addClass("hidden");
-// $(this).addClass("selected");
-
-  //console.log($cardName);
-
-  // if ($cardName === $cardName) {
-  //   console.log("congrats, you got a match!");
-  // }
-  // console.log($test);
-  //var $name = $(this).find('name');
-
-  //console.log(displayRow2[0]);
-  // if (displayRow1[0] == displayRow2[0] && $(".selected")) {
-  //   return alert("you finally did it");
-  // }
-
-  // for(var i in displayRow1) {
-  //   for (var j in displayRow2) {
-  //     if(displayRow1[i] == displayRow2[j]) {
-  //       return alert("its a match!");
-  //     }
-  //   }
-  // }
-  // if ( $(".selected").length >= 2 {
-  //   return;
-  // }
-
-  // $(this).find(".card-front").removeClass("hidden");
-  // $(this).find(".card-back").addClass("hidden");
-
-  //console.log(displayRow2[1]);
 })
 
 function cardRemoval () {
   let card = $(".selected");
-  card.remove();
+  // card.remove();
+  card.removeClass("selected");
 }
 
 function cardFlip (){
-  let cardFront = $(".card-frame").find(".card-front");
+  let cardFront = $(".selected").find(".card-front");
   let card = $(".selected");
+  let cardBack = $(".selected").find(".card-back");
   cardFront.addClass("hidden");
   card.removeClass("selected");
-
+  cardBack.removeClass("hidden");
 }
 
 function getRandomInt(array) {
@@ -99,7 +66,7 @@ function getRandomInt(array) {
 }
 
 function shuffle(a) {
-    var j, x, i;
+    let j, x, i;
     for (i = a.length - 1; i > 0; i--) {
         j = Math.floor(Math.random() * (i + 1));
         x = a[i];
@@ -107,28 +74,24 @@ function shuffle(a) {
         a[j] = x;
     }
 }
-function displayGameCards(url) {
+function displayGameCards() {
   $.ajax(settings).done(function(results){
-    for(let i=0; i<3; i++){
+    for(let i=0; i<6; i++){
       let randoShit = getRandomInt(results.images);
       matchCards.push(randoShit.display_sizes[0].uri);
-    }
-    matchCards.forEach(function(matchCard, i){
       displayRow1.push(`
-          <div name="card${i}" class="card-frame">
-            <img name="card${i}" class="hidden card-front" src="${matchCard}" alt="card-front">
+          <div name="card${i}" index="${i}" class="card-frame">
+            <img name="card${i}" class="hidden card-front" src="${randoShit.display_sizes[0].uri}" alt="card-front">
             <img class="card-back" src="pictures/face.svg" alt="card-back">
           </div>`);
-    }); shuffle(displayRow1);
-    matchCards.forEach(function(matchCard, i){
-      displayRow2.push(
-          `<div name="card${i}" class="card-frame">
-              <img name="card${i}"  class="hidden card-front" src="${matchCard}" alt="card-front">
-              <img class="card-back" src="pictures/face.svg" alt="card-back">
-          </div>`);
-    });
-    shuffle(displayRow2);
+      displayRow1.push(`
+        <div name="card${i}" index="${i+6}" class="card-frame">
+          <img name="card${i}" class="hidden card-front" src="${randoShit.display_sizes[0].uri}" alt="card-front">
+          <img class="card-back" src="pictures/face.svg" alt="card-back">
+        </div>
+        `)
+    }
+    shuffle(displayRow1);
     $("#match-row1").append(displayRow1);
-    $("#match-row2").append(displayRow2);
   });
 }
